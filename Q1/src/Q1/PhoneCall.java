@@ -1,6 +1,7 @@
 package Q1;
 
 import static java.time.temporal.ChronoUnit.MINUTES;
+
 import java.time.LocalTime;
 
 public class PhoneCall {
@@ -10,22 +11,27 @@ public class PhoneCall {
   private final String callee;
   private LocalTime startTime;
   private LocalTime endTime;
+  private Clock clock;
+  private BillingSystemInterface billingSystem;
 
-  public PhoneCall(String caller, String callee) {
+  public PhoneCall(
+      String caller, String callee, Clock clock, BillingSystemInterface billinngSystem) {
     this.caller = caller;
     this.callee = callee;
+    this.clock = clock;
+    this.billingSystem = billinngSystem;
   }
 
   public void start() {
-    startTime = LocalTime.now();
+    startTime = clock.now();
   }
 
   public void end() {
-    endTime = LocalTime.now();
+    endTime = clock.now();
   }
 
   public void charge() {
-    BillingSystem.getInstance().addBillItem(caller, callee, priceInPence());
+    billingSystem.addBillItem(caller, callee, priceInPence());
   }
 
   private long priceInPence() {
@@ -36,7 +42,7 @@ public class PhoneCall {
     }
   }
 
-  private long duration() {
+  public long duration() {
     return MINUTES.between(startTime, endTime) + 1;
   }
 }
