@@ -32,9 +32,30 @@ public class PhoneCallTest {
   }
 
   @Test
-  public void peakTimeCallsAreChargedCorrectly() {
+  public void callsEndingWithinPeakTimeAreChargedPeakRate() {
     // Set clock to peak time
-    ControllableClock clock = new ControllableClock(LocalTime.of(10, 0));
+    ControllableClock clock = new ControllableClock(LocalTime.of(8, 50));
+
+    // Make 20-minute phone call
+    PhoneCall call = new PhoneCall(caller, callee, clock, billingSystem);
+    call.start();
+    clock.advanceBy(20, ChronoUnit.MINUTES);
+    call.end();
+
+    // Check that the charge is the duration times peak rate
+    context.checking(
+        new Expectations() {
+          {
+            exactly(1).of(billingSystem).addBillItem(caller, callee, call.duration() * PEAK_RATE);
+          }
+        });
+    call.charge();
+  }
+
+  @Test
+  public void callsStartingWithinPeakTimeAreChargedPeakRate() {
+    // Set clock to peak time
+    ControllableClock clock = new ControllableClock(LocalTime.of(17, 50));
 
     // Make 20-minute phone call
     PhoneCall call = new PhoneCall(caller, callee, clock, billingSystem);

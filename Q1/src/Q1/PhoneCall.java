@@ -35,7 +35,7 @@ public class PhoneCall {
   }
 
   private long priceInPence() {
-    if (startTime.isAfter(LocalTime.of(9, 00)) && endTime.isBefore(LocalTime.of(18, 00))) {
+    if (startTime.isAfter(LocalTime.of(9, 00)) || endTime.isBefore(LocalTime.of(18, 00))) {
       return duration() * PEAK_RATE;
     } else {
       return duration() * OFF_PEAK_RATE;
