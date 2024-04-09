@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ViewSimple {
+public class ViewSimple implements Updatable {
   private final JTextField currentMax;
   private final JTextField currentMean;
 
@@ -30,6 +30,7 @@ public class ViewSimple {
     frame.setVisible(true);
   }
 
+  @Override
   public void update(ModelSimple model) {
     currentMax.setText(String.valueOf(model.getMax()));
     currentMean.setText(String.valueOf(model.getMean()));

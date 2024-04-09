@@ -8,9 +8,9 @@ public class ModelSimple {
   private final List<Integer> numbers = new ArrayList<>();
   private Integer max;
   private double mean;
-  private ViewSimple view;
+  private Updatable view;
 
-  public ModelSimple(ViewSimple view) {
+  public ModelSimple(Updatable view) {
     this.view = view;
   }
 
